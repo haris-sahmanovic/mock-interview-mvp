@@ -25,7 +25,7 @@ def read_txt_file(file_path):
 LOGGER = get_logger(__name__)
 
 try:
-    openai.api_key = "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"
+    openai.api_key = "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"
 except KeyError:
     st.write("Error: The OPENAI_API_KEY environment variable is not set.")
     st.stop()
