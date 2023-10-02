@@ -30,6 +30,15 @@ except KeyError:
     st.write("Error: The OPENAI_API_KEY environment variable is not set.")
     st.stop()
 
+if "system_message_sent" not in st.session_state:
+    st.session_state.system_message_sent = False
+
+if "current_question" not in st.session_state:
+    st.session_state.current_question = 1
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 
 def run():
     # Streamlit UI
@@ -46,7 +55,7 @@ def run():
     )
     st.title('Welcome to Your AI Mock Interview!')
     st.write(' ')
-    with st.expander("📘 Instructions", expanded=False):
+    with st.expander("📘 Instructions", expanded=True):
         st.write(' ')
         st.write("This AI is designed to simulate technical interviews, offering you a valuable practice experience. Feel "
                 "free to ask for clarifications or constraints, just as you would in a real-life interview")
@@ -66,31 +75,44 @@ def run():
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    question_number = st.selectbox(
-        "Select Question Number:",
-        (1, 2, 3)
-    )
+    # new_question_number = st.selectbox(
+    #     "Select Question Number:",
+    #     (1, 2, 3)
+    # )
+    new_question_number = 2
     st.write(' ')
 
-    txt_data = read_txt_file(f"interview_questions/question{question_number}.txt")
+    if new_question_number != st.session_state.current_question:
+        st.session_state.current_question = new_question_number
+        st.session_state.system_message_sent = False
 
-    if not any(msg['role'] == 'system' for msg in st.session_state.messages):
-      st.session_state.messages.append({"role": "system",
-                                        "content": "You are a 27 year old software engineer working for Google conducting a technical interview to a potential candidate."
-                                      "Try to act personable and relaxed. Do not say you are an AI or anything unnatural for an interview."
-                                      "You are not to directly assist them or giveaway any answers or serious insights. You are to judge them"
-                                      "on how well they can think about and answer the question."
-                                      "With that said, if you notice them struggling offer hints that are given to you in the following text,"
-                                      "or try to veer them to the right direction, but DO NOT give away the answers."
-                                      "Furthermore, if they offer a solution that is not listed as a valid solution in the given text,"
-                                      "make sure its not listed in the interview_questions pitfalls. If it isnt in the pitfalls, please let them know you're not sure about it or thats not what we're really looking for."
-                                      "Lastly, consider starting the interview with a casual converstation and asking about their previous work experience,"
-                                      "general career info etc. Dont be afraid to ask about more info such as what they do at [candidates current company], or anything similar"
-                                      "Lastly, when a user types FINISH, the interview is over. Tell them how they did and be honest - don't be too nice or worry about their feelings."
-                                      ""
-                                      "Please ask the following question and evaluate how well candidate does"
-                                      f"{txt_data}"
-                                      })
+    if not st.session_state.system_message_sent:
+        txt_data = read_txt_file(f"interview_questions/question{st.session_state.current_question}.txt")
+        # st.session_state.messages.append({"role": "system", "content": f"Your system message here: {txt_data}"})
+        st.session_state.messages.append({"role": "system",
+                                                            "content": "You are not an assistant. You are a software engineer conducting a technical interview talking to an interviewee. Do not say you are an AI or anything that would sound strange in an interview between 2 humans." 
+                                                            "Start off by asking about them/what they do. Ask one clarifying question, but keep it brief."
+                                                            "You have been given a question, hints, and solution to use during your interview delimited by XML tags. You will not give away answers or help the interviewer find the solution."
+                                                            "If you notice them struggling you are permitted to use one of the hints that's been given with the question, but let them think for a little while first. If they keep struggling, you can keep offering more of these hints one by one. Try not to confirm if they would like a hint, just give one if you find it appropriate. If they offer solution that is not listed below(or worse, one of the pitfalls) let them know you aren't sure if that'll work or that its not a viable solution."
+                                                            "A key part of this interview is letting the interview ask clarifying questions and make their way through ambiguity that is purposely part of the question. If an interviewer asks clarifying questions, clears up ambiguity,  and discusses trade offs when offering solutions that is a strong indication of a good candidate/engineer. DO NOT offer info about ambiguity(such as constraints, inputs, etc) without the interviewee asking about it first. "
+                                                            "Lastly, after discussion make sure you ask the candidate to code their solution. Pseudocode is fine, don't worry about syntax details. We care more about the logic and critical thinking to be correct. Remember: never flat out give the interviewee a solution."
+                                                            "Here is the info for you to conduct the technical interview:"
+                                                            f"<question> {txt_data}<question> "
+                                        })
+        st.session_state.system_message_sent = True
+
+                                                            # we are currently putting the question info in the system message so keep the system message generic info,
+                                                            # and we can put question specific info(what we're looking for) in the question itself
+                                                            # dont forget to ask of O(n)
+                                                            # consider moving hints to the bottom
+                                                            # maybe check for more solutions
+                                                            #Tactic: Use delimiters to clearly indicate distinct parts of the input
+                                                            #Tactic: Specify the steps required to complete a task
+                                                            #Tactic: Use inner monologue or a sequence of queries to hide the model's reasoning process(check tactic above as well)
+                                                            #Tactic: Use code execution to perform more accurate calculations or call external APIs
+                                                            #Tactic: Evaluate model outputs with reference to gold-standard answers
+
+
 
 
     # Display messages except the system message
