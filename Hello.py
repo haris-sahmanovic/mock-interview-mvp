@@ -62,7 +62,8 @@ def run():
         st.write(' ')
         st.write("For a more authentic experience, we recommend using your computer's speech-to-text feature rather than "
                 "typing. Much of interview preparation involves becoming comfortable with verbalizing your thoughts. "
-                "Good luck!'")
+                "Also, try not to Google or look elsewhere! Ask your interviewer clarifying questions like you would in a real interview 😁 "
+                "Good luck!")
 
 
     # Add a horizontal line or divider
