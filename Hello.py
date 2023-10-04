@@ -53,7 +53,7 @@ def run():
         ),
         unsafe_allow_html=True,
     )
-    st.title('Welcome to Your AI Mock Interview!')
+    st.title('Welcome to Your AI Tech Interview!')
     st.write(' ')
     with st.expander("📘 Instructions", expanded=True):
         st.write(' ')
