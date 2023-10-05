@@ -25,7 +25,8 @@ def read_txt_file(file_path):
 LOGGER = get_logger(__name__)
 
 try:
-    openai.api_key = st.secrets["OPENAI_API_KEY"]
+    openai.api_key = "st.secrets["OPENAI_API_KEY"]"
+    # openai.api_key = "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"
 except KeyError:
     st.write("Error: The OPENAI_API_KEY environment variable is not set.")
     st.stop()
@@ -58,7 +59,7 @@ def run():
     with st.expander("📘 Instructions", expanded=True):
         st.write(' ')
         st.write("This AI is designed to simulate technical interviews, offering you a valuable practice experience. Feel "
-                "free to ask for clarifications or constraints, just as you would in a real-life interview")
+                "free to ask for clarifications or constraints, just as you would in a real-life interview.")
         st.write(' ')
         st.write("For a more authentic experience, we recommend using your computer's speech-to-text feature rather than "
                 "typing. Much of interview preparation involves becoming comfortable with verbalizing your thoughts. "
@@ -76,11 +77,10 @@ def run():
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # new_question_number = st.selectbox(
-    #     "Select Question Number:",
-    #     (1, 2, 3)
-    # )
-    new_question_number = 2
+    new_question_number = st.selectbox(
+        "Select Question Number:",
+        (1, 2, 3)
+    )
     st.write(' ')
 
     if new_question_number != st.session_state.current_question:
@@ -92,7 +92,7 @@ def run():
         # st.session_state.messages.append({"role": "system", "content": f"Your system message here: {txt_data}"})
         st.session_state.messages.append({"role": "system",
                                                             "content": "You are not an assistant. You are a software engineer conducting a technical interview talking to an interviewee. Do not say you are an AI or anything that would sound strange in an interview between 2 humans." 
-                                                            "Start off by asking about them/what they do. Ask one clarifying question, but keep it brief."
+                                                            "Start off by asking about them/what they do. Ask one or two clarifying questions, but keep it brief."
                                                             "You have been given a question, hints, and solution to use during your interview delimited by XML tags. You will not give away answers or help the interviewer find the solution."
                                                             "If you notice them struggling you are permitted to use one of the hints that's been given with the question, but let them think for a little while first. If they keep struggling, you can keep offering more of these hints one by one. Try not to confirm if they would like a hint, just give one if you find it appropriate. If they offer solution that is not listed below(or worse, one of the pitfalls) let them know you aren't sure if that'll work or that its not a viable solution."
                                                             "A key part of this interview is letting the interview ask clarifying questions and make their way through ambiguity that is purposely part of the question. If an interviewer asks clarifying questions, clears up ambiguity,  and discusses trade offs when offering solutions that is a strong indication of a good candidate/engineer. DO NOT offer info about ambiguity(such as constraints, inputs, etc) without the interviewee asking about it first. "

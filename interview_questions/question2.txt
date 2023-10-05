@@ -16,7 +16,7 @@ fourth hint: You could also try using XOR.
 
 Solutions:
 We would like to see the interviewee confirm some details with you before starting. They should understand if the
-permutation comparison is case sensitive. That is(for example): is God a permutation of dog? Additionally, they should
+permutation comparison is case-sensitive. That is(for example): is God a permutation of dog? Additionally, they should
 ask if whitespace is significant. We will assume for this problem that the comparison is case sensitive and
 whitespace is significant. So, "god " is different from "dog".
 Observe first that strings of different lengths cannot be permutations of each other. There are two easy
