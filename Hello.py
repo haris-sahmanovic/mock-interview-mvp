@@ -26,7 +26,6 @@ LOGGER = get_logger(__name__)
 
 try:
     openai.api_key = "st.secrets["OPENAI_API_KEY"]"
-    # openai.api_key = "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"
 except KeyError:
     st.write("Error: The OPENAI_API_KEY environment variable is not set.")
     st.stop()
